@@ -1,0 +1,598 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  background: #aeb8c7;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* ================= MAIN ================= */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0 8px 7px;
+  background: #aeb8c7;
+}
+
+.website {
+  width: 100%;
+  min-height: calc(100vh - 7px);
+  background: #1A1A19;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 7px solid #dce2ea;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+  width: 100%;
+  height: 45px;
+  padding: 0 38px;
+  border-bottom: 3px solid #4eb4c0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.small-logo {
+  color: #67c6d1;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.small-icon {
+  font-size: 14px;
+  margin-right: 1px;
+}
+
+/* ================= NAV LINKS ================= */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 31px;
+}
+
+.nav-links button {
+  border: none;
+  background: transparent;
+  color: #64bfca;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  padding: 5px;
+  transition: 0.2s ease;
+}
+
+.nav-links button:hover {
+  color: #ffffff;
+}
+
+/* =====================================================
+   PAGE 1 — LANDING PAGE
+===================================================== */
+
+.hero-section {
+  width: 100%;
+  min-height: calc(100vh - 52px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 76px;
+}
+
+.main-logo {
+  width: 235px;
+  height: 108px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 29px;
+}
+
+.aktiv-logo {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.tagline {
+  width: 452px;
+  min-height: 35px;
+
+  border: 1px solid #c7e1e5;
+  border-radius: 10px;
+  background: #324a4d;
+
+  color: #dfe4e7;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  padding: 5px 12px;
+
+  font-size: 18px;
+  letter-spacing: 0.5px;
+
+  margin-bottom: 18px;
+}
+
+.hero-section h1 {
+  color: #e0e0e4;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 58px;
+}
+
+.start-btn {
+  width: 136px;
+  height: 35px;
+
+  border: none;
+  border-radius: 11px;
+
+  background: #47bac5;
+  color: #eaf5f6;
+
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.7px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 0 12px rgba(58, 203, 214, 0.5),
+    0 0 25px rgba(58, 203, 214, 0.2);
+
+  transition: 0.2s ease;
+}
+
+.start-btn:hover {
+  transform: scale(1.04);
+  background: #59c7d1;
+}
+
+/* =====================================================
+   PAGE 2 — AVAILABLE ACTIVITIES
+===================================================== */
+
+.activities-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 55px 20px;
+}
+
+.activities-page > h1 {
+  color: #69cbd5;
+  font-size: 31px;
+  letter-spacing: 4px;
+  font-weight: bold;
+  margin-bottom: 40px;
+
+  text-shadow: 0 0 18px rgba(72, 202, 215, 0.3);
+}
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 24px 58px;
+}
+
+.activity-card {
+  min-height: 143px;
+  padding: 20px 12px;
+
+  background: #eeece8;
+  border: 2px solid #61d2da;
+  border-radius: 13px;
+
+  box-shadow:
+    0 0 15px rgba(67, 214, 220, 0.4),
+    0 0 30px rgba(67, 214, 220, 0.15);
+}
+
+.blue-card {
+  border-color: #36a7e7;
+
+  box-shadow:
+    0 0 15px rgba(54, 167, 231, 0.4),
+    0 0 30px rgba(54, 167, 231, 0.15);
+}
+
+.activity-card h2 {
+  color: #59697c;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  margin-bottom: 11px;
+}
+
+.activity-card p {
+  color: #59697c;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+  min-height: 37px;
+  margin-bottom: 8px;
+}
+
+.activity-btn {
+  min-width: 112px;
+  height: 31px;
+  padding: 0 10px;
+
+  border: 1px solid #45bdc7;
+  border-radius: 14px;
+
+  background: transparent;
+  color: #59697c;
+
+  font-size: 13px;
+  letter-spacing: 0.3px;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.activity-btn:hover {
+  background: #45b9c5;
+  color: #ffffff;
+}
+
+/* =====================================================
+   PAGE 3 & 4 — LOGIN AND SIGN UP
+===================================================== */
+
+.form-page {
+  width: 100%;
+  min-height: calc(100vh - 52px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 35px 15px;
+}
+
+.auth-card {
+  width: 300px;
+  min-height: 280px;
+
+  padding: 28px 35px 25px;
+
+  background: #eeece8;
+  border-radius: 14px;
+}
+
+/* LOGIN BLUE BORDER */
+
+.login-card {
+  border: 2px solid #37a9ec;
+
+  box-shadow:
+    0 0 15px rgba(54, 167, 231, 0.55),
+    0 0 35px rgba(54, 167, 231, 0.2);
+}
+
+/* SIGN UP CYAN BORDER */
+
+.signup-card {
+  border: 2px solid #5dd1d8;
+
+  box-shadow:
+    0 0 15px rgba(67, 214, 220, 0.55),
+    0 0 35px rgba(67, 214, 220, 0.2);
+}
+
+/* ================= AUTH TABS ================= */
+
+.auth-tabs {
+  width: 100%;
+  height: 35px;
+
+  display: flex;
+  overflow: hidden;
+
+  background: #9d9d9d;
+  border-radius: 10px;
+
+  margin-bottom: 42px;
+}
+
+.auth-tab {
+  flex: 1;
+
+  border: none;
+  background: transparent;
+
+  color: #f2f2f2;
+  font-size: 14px;
+  letter-spacing: 2px;
+
+  cursor: pointer;
+}
+
+.active-tab {
+  background: #eeece8;
+  color: #459eaa;
+
+  border: 1px solid #56c7cf;
+  border-radius: 10px;
+}
+
+/* ================= INPUTS ================= */
+
+.form-fields {
+  width: 100%;
+}
+
+.input-box {
+  width: 100%;
+  height: 33px;
+
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #43b9c4;
+  border-radius: 10px;
+
+  margin-bottom: 17px;
+  padding: 0 12px;
+
+  background: #f3f1ee;
+}
+
+.input-icon {
+  color: #45acb7;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.input-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: #59697c;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.input-box input::placeholder {
+  color: #718093;
+}
+
+/* ================= FORM BUTTON ================= */
+
+.continue-btn {
+  width: 100%;
+  height: 35px;
+
+  margin-top: 30px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #48aeb5;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.continue-btn:hover {
+  background: #56c4cc;
+  transform: scale(1.02);
+}
+
+/* ================= FORM LINK ================= */
+
+.form-link {
+  width: 100%;
+  border: none;
+  background: transparent;
+
+  color: #718093;
+
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 1.3px;
+
+  margin-top: 17px;
+
+  cursor: pointer;
+}
+
+.form-link:hover {
+  color: #45b9c5;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 25px;
+  }
+
+  .activities-page {
+    padding: 35px 30px;
+  }
+
+  .activities-grid {
+    gap: 20px;
+  }
+
+  .hero-section {
+    padding-top: 65px;
+  }
+}
+
+/* =====================================================
+   MOBILE / IPHONE / ANDROID
+===================================================== */
+
+@media (max-width: 600px) {
+  .page {
+    padding: 0 4px 4px;
+  }
+
+  .website {
+    min-height: calc(100vh - 4px);
+    border-bottom-width: 4px;
+  }
+
+  .navbar {
+    height: 50px;
+    padding: 0 15px;
+  }
+
+  .small-logo {
+    font-size: 18px;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+
+  .nav-links button {
+    font-size: 11px;
+  }
+
+  .hero-section {
+    min-height: calc(100vh - 54px);
+    padding: 60px 15px 40px;
+  }
+
+  .main-logo {
+    width: min(210px, 65vw);
+    height: auto;
+    margin-bottom: 25px;
+  }
+
+  .tagline {
+    width: min(452px, 90vw);
+    min-height: 35px;
+    height: auto;
+    padding: 7px 12px;
+    font-size: clamp(13px, 3.8vw, 17px);
+  }
+
+  .hero-section h1 {
+    font-size: clamp(22px, 6vw, 27px);
+    text-align: center;
+    margin-bottom: 55px;
+  }
+
+  .activities-page {
+    padding: 30px 20px;
+  }
+
+  .activities-page > h1 {
+    font-size: clamp(23px, 7vw, 30px);
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+  }
+
+  .activities-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .activity-card {
+    min-height: 135px;
+  }
+
+  .form-page {
+    min-height: calc(100vh - 54px);
+  }
+
+  .auth-card {
+    width: min(300px, 90vw);
+  }
+}
+
+/* ================= SMALL PHONES ================= */
+
+@media (max-width: 380px) {
+  .navbar {
+    padding: 0 10px;
+  }
+
+  .small-logo {
+    font-size: 16px;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-links button {
+    font-size: 9px;
+  }
+
+  .auth-card {
+    padding: 25px;
+  }
+
+  .activities-page {
+    padding: 25px 15px;
+  }
+
+  .hero-section {
+    padding-top: 45px;
+  }
+
+  .main-logo {
+    width: 180px;
+  }
+
+  .tagline {
+    width: 94vw;
+    font-size: 12px;
+  }
+
+  .hero-section h1 {
+    font-size: 21px;
+  }
+}
