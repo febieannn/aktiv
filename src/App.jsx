@@ -5,19 +5,26 @@ function App() {
   const [page, setPage] = useState('home')
   const [authMode, setAuthMode] = useState('login')
 
+  // SIGN UP
   const [fullName, setFullName] = useState('')
-  const [username, setUsername] = useState('')
   const [signupEmail, setSignupEmail] = useState('')
   const [signupPassword, setSignupPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  // LOGIN
   const [loginEmail, setLoginEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
 
+  // NAVIGATION
   const [activeNav, setActiveNav] = useState('home')
   const [showUserMenu, setShowUserMenu] = useState(false)
 
+  // LOGIN STATUS
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [loggedInUsername, setLoggedInUsername] = useState('')
+
+  // SETTINGS
   const [settingsTab, setSettingsTab] = useState('account')
 
   const [notifications, setNotifications] = useState({
@@ -27,6 +34,7 @@ function App() {
     emailNotifications: true
   })
 
+  // ACTIVITIES
   const activities = [
     {
       title: 'Login Form',
@@ -84,17 +92,28 @@ function App() {
     }
   ]
 
+  // ==================================================
+  // NAVIGATION FUNCTIONS
+  // ==================================================
+
   function goHome() {
     setPage('home')
     setActiveNav('home')
     setShowUserMenu(false)
+
     window.scrollTo(0, 0)
   }
 
   function goActivities() {
+    if (!isLoggedIn) {
+      openLogin()
+      return
+    }
+
     setPage('activities')
     setActiveNav('activities')
     setShowUserMenu(false)
+
     window.scrollTo(0, 0)
   }
 
@@ -104,6 +123,7 @@ function App() {
     setPage('auth')
     setActiveNav('')
     setShowUserMenu(false)
+
     window.scrollTo(0, 0)
   }
 
@@ -113,6 +133,7 @@ function App() {
     setPage('auth')
     setActiveNav('')
     setShowUserMenu(false)
+
     window.scrollTo(0, 0)
   }
 
@@ -126,12 +147,25 @@ function App() {
     }
   }
 
+  // ==================================================
+  // SCROLL TO HOME SECTIONS
+  // ==================================================
+
   function scrollToSection(id) {
     setShowUserMenu(false)
 
     if (page !== 'home') {
       setPage('home')
-      setActiveNav(id === 'how-it-works' ? 'how' : 'home')
+
+      if (id === 'features') {
+        setActiveNav('features')
+      } else if (id === 'how-it-works') {
+        setActiveNav('how')
+      } else if (id === 'about') {
+        setActiveNav('about')
+      } else {
+        setActiveNav('home')
+      }
 
       setTimeout(() => {
         document
@@ -140,47 +174,80 @@ function App() {
             behavior: 'smooth'
           })
       }, 100)
-    } else {
-      setActiveNav(id === 'how-it-works' ? 'how' : 'home')
 
-      document
-        .getElementById(id)
-        ?.scrollIntoView({
-          behavior: 'smooth'
-        })
+      return
     }
+
+    if (id === 'features') {
+      setActiveNav('features')
+    } else if (id === 'how-it-works') {
+      setActiveNav('how')
+    } else if (id === 'about') {
+      setActiveNav('about')
+    } else {
+      setActiveNav('home')
+    }
+
+    document
+      .getElementById(id)
+      ?.scrollIntoView({
+        behavior: 'smooth'
+      })
   }
 
   function goProgress() {
+    if (!isLoggedIn) {
+      openLogin()
+      return
+    }
+
     setShowUserMenu(false)
     setActiveNav('progress')
+
     alert('Progress coming soon!')
   }
 
   function goSettings(tab = 'account') {
+    if (!isLoggedIn) {
+      openLogin()
+      return
+    }
+
     setSettingsTab(tab)
     setPage('settings')
     setActiveNav('')
     setShowUserMenu(false)
+
     window.scrollTo(0, 0)
   }
 
   function handleLogout() {
+    setIsLoggedIn(false)
+    setLoggedInUsername('')
     setShowUserMenu(false)
+
     setPage('home')
     setActiveNav('home')
+
     window.scrollTo(0, 0)
+
     alert('You have been logged out.')
   }
 
+  // ==================================================
+  // LOGIN
+  // ==================================================
+
   async function handleLogin(e) {
     e.preventDefault()
+
     setLoginError('')
 
     if (!loginEmail || !password) {
       setLoginError(
         'Please enter your email and password.'
       )
+
       return
     }
 
@@ -189,10 +256,12 @@ function App() {
         'http://localhost/aktiv/login.php',
         {
           method: 'POST',
+
           headers: {
             'Content-Type':
               'application/x-www-form-urlencoded'
           },
+
           body: new URLSearchParams({
             email: loginEmail,
             password: password
@@ -200,11 +269,32 @@ function App() {
         }
       )
 
+      /*
+       * Your PHP login currently uses a redirect.
+       * If it redirects to page1.php,
+       * login is considered successful.
+       */
+
       if (response.url.includes('page1.php')) {
+        setIsLoggedIn(true)
+
+        /*
+         * Since there is no username field in Sign Up,
+         * use the email before @ as the display name.
+         */
+
+        setLoggedInUsername(
+          loginEmail.split('@')[0]
+        )
+
         setLoginEmail('')
         setPassword('')
         setLoginError('')
-        goActivities()
+
+        setPage('activities')
+        setActiveNav('activities')
+
+        window.scrollTo(0, 0)
       } else {
         setLoginError(
           'Invalid email or password.'
@@ -219,8 +309,22 @@ function App() {
     }
   }
 
+  // ==================================================
+  // SIGN UP
+  // ==================================================
+
   async function handleSignup(e) {
     e.preventDefault()
+
+    /*
+     * USERNAME REMOVED
+     *
+     * Required fields:
+     * Full Name
+     * Email
+     * Password
+     * Confirm Password
+     */
 
     if (
       !fullName ||
@@ -229,11 +333,13 @@ function App() {
       !confirmPassword
     ) {
       alert('Please complete all fields.')
+
       return
     }
 
     if (signupPassword !== confirmPassword) {
       alert('Passwords do not match.')
+
       return
     }
 
@@ -242,12 +348,17 @@ function App() {
         'http://localhost/aktiv/signup.php',
         {
           method: 'POST',
+
           headers: {
             'Content-Type': 'application/json'
           },
+
+          /*
+           * USERNAME REMOVED FROM REQUEST
+           */
+
           body: JSON.stringify({
             fullname: fullName,
-            username: username,
             email: signupEmail,
             password: signupPassword,
             confirmPassword: confirmPassword
@@ -261,7 +372,6 @@ function App() {
         alert('Sign up successful!')
 
         setFullName('')
-        setUsername('')
         setSignupEmail('')
         setSignupPassword('')
         setConfirmPassword('')
@@ -281,12 +391,20 @@ function App() {
     }
   }
 
+  // ==================================================
+  // NOTIFICATIONS
+  // ==================================================
+
   function toggleNotification(key) {
     setNotifications((previous) => ({
       ...previous,
       [key]: !previous[key]
     }))
   }
+
+  // ==================================================
+  // ACTIVITY ICONS
+  // ==================================================
 
   function renderActivityIcon(type) {
     if (type === 'login') {
@@ -334,6 +452,7 @@ function App() {
             height="18"
             rx="2"
           />
+
           <path d="M8 7h5" />
           <path d="M8 11h5" />
           <path d="M8 15h3" />
@@ -356,11 +475,13 @@ function App() {
           strokeLinejoin="round"
         >
           <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H7" />
+
           <circle
             cx="10"
             cy="19"
             r="1"
           />
+
           <circle
             cx="18"
             cy="19"
@@ -389,6 +510,7 @@ function App() {
             height="14"
             rx="2"
           />
+
           <rect
             x="17"
             y="9"
@@ -396,6 +518,7 @@ function App() {
             height="8"
             rx="1"
           />
+
           <path d="M7 9h4" />
           <path d="M7 13h4" />
         </svg>
@@ -415,6 +538,7 @@ function App() {
           strokeLinejoin="round"
         >
           <path d="m20 13-7 7-8-8V5h7z" />
+
           <circle
             cx="8"
             cy="8"
@@ -440,6 +564,7 @@ function App() {
           cy="8"
           r="3"
         />
+
         <path d="M5 20c.7-3.6 3-5.5 7-5.5s6.3 1.9 7 5.5" />
       </svg>
     )
@@ -447,6 +572,7 @@ function App() {
 
   return (
     <main className="page">
+
       <section className="website">
 
         {/* ==================================================
@@ -456,6 +582,7 @@ function App() {
         <nav className="navbar">
 
           {/* LOGO */}
+
           <button
             type="button"
             className="logo-button"
@@ -470,8 +597,13 @@ function App() {
           </button>
 
 
-          {/* CENTER NAVIGATION */}
+          {/* ==================================================
+              CENTER NAVIGATION
+              ================================================== */}
+
           <div className="nav-center">
+
+            {/* HOME */}
 
             <button
               type="button"
@@ -485,29 +617,56 @@ function App() {
               Home
             </button>
 
-            <button
-              type="button"
-              className={
-                activeNav === 'activities'
-                  ? 'nav-item active'
-                  : 'nav-item'
-              }
-              onClick={goActivities}
-            >
-              Activities
-            </button>
+
+            {/* FEATURES */}
 
             <button
               type="button"
               className={
-                activeNav === 'progress'
+                activeNav === 'features'
                   ? 'nav-item active'
                   : 'nav-item'
               }
-              onClick={goProgress}
+              onClick={() =>
+                scrollToSection('features')
+              }
             >
-              Progress
+              Features
             </button>
+
+
+            {/* ONLY SHOW AFTER LOGIN */}
+
+            {isLoggedIn && (
+              <>
+                <button
+                  type="button"
+                  className={
+                    activeNav === 'activities'
+                      ? 'nav-item active'
+                      : 'nav-item'
+                  }
+                  onClick={goActivities}
+                >
+                  Activities
+                </button>
+
+                <button
+                  type="button"
+                  className={
+                    activeNav === 'progress'
+                      ? 'nav-item active'
+                      : 'nav-item'
+                  }
+                  onClick={goProgress}
+                >
+                  Progress
+                </button>
+              </>
+            )}
+
+
+            {/* HOW IT WORKS */}
 
             <button
               type="button"
@@ -520,117 +679,182 @@ function App() {
                 scrollToSection('how-it-works')
               }
             >
-              How It works
+              How it works
+            </button>
+
+
+            {/* ABOUT */}
+
+            <button
+              type="button"
+              className={
+                activeNav === 'about'
+                  ? 'nav-item active'
+                  : 'nav-item'
+              }
+              onClick={() =>
+                scrollToSection('about')
+              }
+            >
+              About
             </button>
 
           </div>
 
 
-          {/* RIGHT NAVIGATION */}
+          {/* ==================================================
+              RIGHT NAVIGATION
+              ================================================== */}
+
           <div className="nav-user">
 
-            {/* NOTIFICATION */}
-            <button
-              type="button"
-              className="nav-icon-button"
-              onClick={() =>
-                goSettings('notification')
-              }
-              aria-label="Notifications"
-            >
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
-                <path d="M10 21h4" />
-              </svg>
-            </button>
+            {!isLoggedIn ? (
 
-
-            {/* USER ICON */}
-            <button
-              type="button"
-              className="nav-user-profile"
-              onClick={() =>
-                goSettings('account')
-              }
-              aria-label="Profile"
-            >
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle
-                  cx="12"
-                  cy="8"
-                  r="3.2"
-                />
-
-                <path d="M5.5 20c.8-3.4 3-5 6.5-5s5.7 1.6 6.5 5" />
-              </svg>
-            </button>
-
-
-            {/* CHEVRON */}
-            <button
-              type="button"
-              className="nav-chevron"
-              onClick={() =>
-                setShowUserMenu(
-                  (previous) => !previous
-                )
-              }
-              aria-label="Account menu"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </button>
-
-
-            {/* USER DROPDOWN */}
-            {showUserMenu && (
-              <div className="user-menu">
+              <>
+                <button
+                  type="button"
+                  className="nav-login-button"
+                  onClick={openLogin}
+                >
+                  Login
+                </button>
 
                 <button
                   type="button"
+                  className="nav-signup-button"
+                  onClick={openSignup}
+                >
+                  Sign Up
+                </button>
+              </>
+
+            ) : (
+
+              <>
+
+                {/* NOTIFICATION */}
+
+                <button
+                  type="button"
+                  className="nav-icon-button"
+                  onClick={() =>
+                    goSettings('notification')
+                  }
+                  aria-label="Notifications"
+                >
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+                    <path d="M10 21h4" />
+                  </svg>
+                </button>
+
+
+                {/* USER PROFILE */}
+
+                <button
+                  type="button"
+                  className="nav-user-profile"
+                  onClick={() =>
+                    goSettings('account')
+                  }
+                  aria-label="Profile"
+                >
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle
+                      cx="12"
+                      cy="8"
+                      r="3.2"
+                    />
+
+                    <path d="M5.5 20c.8-3.4 3-5 6.5-5s5.7 1.6 6.5 5" />
+                  </svg>
+                </button>
+
+
+                {/* DISPLAY NAME */}
+
+                <button
+                  type="button"
+                  className="nav-username-button"
                   onClick={() =>
                     goSettings('account')
                   }
                 >
-                  Settings
+                  {loggedInUsername || 'Account'}
                 </button>
+
+
+                {/* CHEVRON */}
 
                 <button
                   type="button"
-                  onClick={handleLogout}
+                  className="nav-chevron"
+                  onClick={() =>
+                    setShowUserMenu(
+                      previous => !previous
+                    )
+                  }
+                  aria-label="Account menu"
                 >
-                  Log out
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
                 </button>
 
-              </div>
+
+                {/* USER DROPDOWN */}
+
+                {showUserMenu && (
+                  <div className="user-menu">
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        goSettings('account')
+                      }
+                    >
+                      Settings
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                    >
+                      Log out
+                    </button>
+
+                  </div>
+                )}
+
+              </>
+
             )}
 
           </div>
@@ -644,6 +868,8 @@ function App() {
 
         {page === 'home' && (
           <>
+
+            {/* HERO */}
 
             <section className="hero-section">
 
@@ -700,7 +926,9 @@ function App() {
             </section>
 
 
-            {/* FEATURES */}
+            {/* ==================================================
+                FEATURES
+                ================================================== */}
 
             <section
               className="features-section"
@@ -708,10 +936,13 @@ function App() {
             >
 
               <div className="section-title">
+
                 <h2>
                   Features
                 </h2>
+
               </div>
+
 
               <div className="features-grid">
 
@@ -809,7 +1040,9 @@ function App() {
             </section>
 
 
-            {/* HOW IT WORKS */}
+            {/* ==================================================
+                HOW IT WORKS
+                ================================================== */}
 
             <section
               className="how-section"
@@ -824,78 +1057,37 @@ function App() {
 
               </div>
 
+
               <div className="steps-container">
 
                 <div className="step">
-
-                  <div className="step-number">
-                    1
-                  </div>
-
-                  <h3>
-                    Create an account
-                  </h3>
-
+                  <div className="step-number">1</div>
+                  <h3>Create an account</h3>
                 </div>
 
                 <div className="step">
-
-                  <div className="step-number">
-                    2
-                  </div>
-
-                  <h3>
-                    Choose an activity
-                  </h3>
-
+                  <div className="step-number">2</div>
+                  <h3>Choose an activity</h3>
                 </div>
 
                 <div className="step">
-
-                  <div className="step-number">
-                    3
-                  </div>
-
-                  <h3>
-                    Start a challenge
-                  </h3>
-
+                  <div className="step-number">3</div>
+                  <h3>Start a challenge</h3>
                 </div>
 
                 <div className="step">
-
-                  <div className="step-number">
-                    4
-                  </div>
-
-                  <h3>
-                    Practice your skills
-                  </h3>
-
+                  <div className="step-number">4</div>
+                  <h3>Practice your skills</h3>
                 </div>
 
                 <div className="step">
-
-                  <div className="step-number">
-                    5
-                  </div>
-
-                  <h3>
-                    Receive feedback
-                  </h3>
-
+                  <div className="step-number">5</div>
+                  <h3>Receive feedback</h3>
                 </div>
 
                 <div className="step">
-
-                  <div className="step-number">
-                    6
-                  </div>
-
-                  <h3>
-                    Improve your skills
-                  </h3>
-
+                  <div className="step-number">6</div>
+                  <h3>Improve your skills</h3>
                 </div>
 
               </div>
@@ -903,7 +1095,9 @@ function App() {
             </section>
 
 
-            {/* ABOUT */}
+            {/* ==================================================
+                ABOUT
+                ================================================== */}
 
             <section
               className="about-section"
@@ -955,13 +1149,16 @@ function App() {
 
             <footer className="footer">
 
-               <strong>
-            <img
-              src="/aktivLogo.png"
-              alt="aktiv"
-              className="aktiv-logo"
-            />
-            </strong> 
+              <strong>
+
+                <img
+                  src="/aktivLogo.png"
+                  alt="aktiv"
+                  className="aktiv-logo"
+                />
+
+              </strong>
+
 
               <div className="footer-links">
 
@@ -987,9 +1184,7 @@ function App() {
 
                 <button
                   onClick={() =>
-                    scrollToSection(
-                      'how-it-works'
-                    )
+                    scrollToSection('how-it-works')
                   }
                 >
                   Privacy Policy
@@ -1009,7 +1204,6 @@ function App() {
 
         {/* ==================================================
             ACTIVITIES PAGE
-            UPDATED TO MATCH 4TH PHOTO
             ================================================== */}
 
         {page === 'activities' && (
@@ -1017,7 +1211,6 @@ function App() {
 
             <div className="activities-container">
 
-              {/* BANNER */}
               <div className="activities-banner">
 
                 <img
@@ -1028,7 +1221,6 @@ function App() {
               </div>
 
 
-              {/* HEADER */}
               <div className="activities-title">
 
                 <h1>
@@ -1043,7 +1235,6 @@ function App() {
               </div>
 
 
-              {/* CARDS */}
               <div className="activities-grid">
 
                 {activities.map(
@@ -1056,10 +1247,13 @@ function App() {
                       <div className="activity-card-top">
 
                         <div className="activity-icon">
+
                           {renderActivityIcon(
                             activity.icon
                           )}
+
                         </div>
+
 
                         <div className="activity-card-heading">
 
@@ -1072,24 +1266,22 @@ function App() {
                             <span
                               className={`activity-status ${activity.type}`}
                             >
-                              {activity.type ===
-                                'completed' && (
-                                <span className="status-dot">
-                                  ●
-                                </span>
-                              )}
 
-                              {activity.type ===
-                                'in-progress' && (
+                              {(activity.type ===
+                                'completed' ||
+                                activity.type ===
+                                  'in-progress') && (
                                 <span className="status-dot">
                                   ●
                                 </span>
                               )}
 
                               {activity.status}
+
                             </span>
 
                           </div>
+
 
                           <p>
                             {activity.description}
@@ -1115,10 +1307,12 @@ function App() {
                             )
                           }
                         >
+
                           {activity.type ===
                           'completed'
                             ? 'View Activity →'
                             : 'Start Activity →'}
+
                         </button>
 
                       </div>
@@ -1132,33 +1326,42 @@ function App() {
             </div>
 
 
-            {/* ACTIVITIES FOOTER */}
-
             <footer className="activities-footer">
 
               <div>
-      <strong>
-            <img
-              src="/aktivLogo.png"
-              alt="aktiv"
-              className="aktiv-logo"
-            />
-            </strong>    
+
+                <strong>
+
+                  <img
+                    src="/aktivLogo.png"
+                    alt="aktiv"
+                    className="aktiv-logo"
+                  />
+
+                </strong>
 
                 <span>
                   © 2026 aktiv inc. All rights reserved.
                 </span>
+
               </div>
+
 
               <div className="activities-footer-links">
 
-                <button onClick={() => alert('About')}>
+                <button
+                  onClick={() =>
+                    scrollToSection('about')
+                  }
+                >
                   About
                 </button>
 
-                <button onClick={() =>
-                  scrollToSection('features')
-                }>
+                <button
+                  onClick={() =>
+                    scrollToSection('features')
+                  }
+                >
                   Features
                 </button>
 
@@ -1166,15 +1369,19 @@ function App() {
                   Contact
                 </button>
 
-                <button onClick={() =>
-                  alert('Privacy Policy')
-                }>
+                <button
+                  onClick={() =>
+                    alert('Privacy Policy')
+                  }
+                >
                   Privacy Policy
                 </button>
 
-                <button onClick={() =>
-                  alert('Terms')
-                }>
+                <button
+                  onClick={() =>
+                    alert('Terms')
+                  }
+                >
                   Terms
                 </button>
 
@@ -1195,8 +1402,6 @@ function App() {
 
             <div className="settings-container">
 
-              {/* SETTINGS HEADER */}
-
               <div className="settings-header">
 
                 <h1>
@@ -1214,8 +1419,6 @@ function App() {
 
               <div className="settings-layout">
 
-                {/* LEFT SIDEBAR */}
-
                 <aside className="settings-sidebar">
 
                   <button
@@ -1231,23 +1434,7 @@ function App() {
                   >
 
                     <span className="settings-tab-icon">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <circle
-                          cx="12"
-                          cy="8"
-                          r="3"
-                        />
-                        <path d="M5 20c.7-3.4 3-5.2 7-5.2s6.3 1.8 7 5.2" />
-                      </svg>
+                      👤
                     </span>
 
                     <span>
@@ -1260,8 +1447,7 @@ function App() {
                   <button
                     type="button"
                     className={
-                      settingsTab ===
-                      'notification'
+                      settingsTab === 'notification'
                         ? 'settings-tab active'
                         : 'settings-tab'
                     }
@@ -1273,19 +1459,7 @@ function App() {
                   >
 
                     <span className="settings-tab-icon">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
-                        <path d="M10 21h4" />
-                      </svg>
+                      🔔
                     </span>
 
                     <span>
@@ -1308,27 +1482,7 @@ function App() {
                   >
 
                     <span className="settings-tab-icon">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect
-                          x="5"
-                          y="4"
-                          width="14"
-                          height="16"
-                          rx="2"
-                        />
-                        <path d="M9 8h6" />
-                        <path d="M9 12h4" />
-                        <path d="M9 16h3" />
-                      </svg>
+                      ⚙
                     </span>
 
                     <span>
@@ -1340,11 +1494,9 @@ function App() {
                 </aside>
 
 
-                {/* SETTINGS CONTENT */}
-
                 <div className="settings-content">
 
-                  {/* ACCOUNT SETTINGS */}
+                  {/* ACCOUNT */}
 
                   {settingsTab === 'account' && (
                     <div className="settings-panel">
@@ -1361,14 +1513,22 @@ function App() {
 
                       </div>
 
+
                       <div className="settings-divider"></div>
 
 
                       <div className="profile-row">
 
                         <div className="profile-avatar">
-                          JD
+
+                          {loggedInUsername
+                            ? loggedInUsername
+                                .substring(0, 2)
+                                .toUpperCase()
+                            : 'U'}
+
                         </div>
+
 
                         <button
                           type="button"
@@ -1390,15 +1550,17 @@ function App() {
                         <div className="account-field">
 
                           <label>
-                            Username
+                            Display Name
                           </label>
 
                           <input
                             type="text"
-                            placeholder="Username"
-                            value={username}
+                            placeholder="Display Name"
+                            value={
+                              loggedInUsername
+                            }
                             onChange={(e) =>
-                              setUsername(
+                              setLoggedInUsername(
                                 e.target.value
                               )
                             }
@@ -1417,7 +1579,7 @@ function App() {
                             type="email"
                             value={
                               signupEmail ||
-                              'jordanclacruz@gmail.com'
+                              loginEmail
                             }
                             onChange={(e) =>
                               setSignupEmail(
@@ -1437,7 +1599,6 @@ function App() {
 
                           <input
                             type="password"
-                            placeholder=""
                           />
 
                         </div>
@@ -1451,12 +1612,12 @@ function App() {
 
                           <input
                             type="password"
-                            placeholder=""
                           />
 
                         </div>
 
                       </div>
+
 
                       <div className="settings-actions">
 
@@ -1503,6 +1664,7 @@ function App() {
 
                       </div>
 
+
                       <div className="settings-divider"></div>
 
 
@@ -1511,6 +1673,7 @@ function App() {
                         <div className="notification-row">
 
                           <div>
+
                             <h3>
                               Activity reminders
                             </h3>
@@ -1518,7 +1681,9 @@ function App() {
                             <p>
                               A nudge when you have steps left to finish.
                             </p>
+
                           </div>
+
 
                           <button
                             type="button"
@@ -1542,6 +1707,7 @@ function App() {
                         <div className="notification-row">
 
                           <div>
+
                             <h3>
                               Progress updates
                             </h3>
@@ -1549,7 +1715,9 @@ function App() {
                             <p>
                               Weekly summary of completed activities.
                             </p>
+
                           </div>
+
 
                           <button
                             type="button"
@@ -1573,6 +1741,7 @@ function App() {
                         <div className="notification-row">
 
                           <div>
+
                             <h3>
                               New activities
                             </h3>
@@ -1580,7 +1749,9 @@ function App() {
                             <p>
                               Tell me when new practice activities are added.
                             </p>
+
                           </div>
+
 
                           <button
                             type="button"
@@ -1604,6 +1775,7 @@ function App() {
                         <div className="notification-row">
 
                           <div>
+
                             <h3>
                               Email notifications
                             </h3>
@@ -1611,7 +1783,9 @@ function App() {
                             <p>
                               Send these to my email as well.
                             </p>
+
                           </div>
+
 
                           <button
                             type="button"
@@ -1677,6 +1851,7 @@ function App() {
 
                         </div>
 
+
                         <div className="settings-divider"></div>
 
 
@@ -1713,6 +1888,7 @@ function App() {
 
                         </div>
 
+
                         <button
                           type="button"
                           className="delete-btn"
@@ -1741,13 +1917,15 @@ function App() {
 
 
         {/* ==================================================
-            AUTH
+            AUTHENTICATION
             ================================================== */}
 
         {page === 'auth' && (
           <section className="auth-page">
 
-            {/* LOGIN */}
+            {/* ==================================================
+                LOGIN
+                ================================================== */}
 
             {authMode === 'login' && (
               <div className="auth-layout">
@@ -1801,6 +1979,7 @@ function App() {
                           setLoginEmail(
                             e.target.value
                           )
+
                           setLoginError('')
                         }}
                       />
@@ -1836,6 +2015,7 @@ function App() {
                           setPassword(
                             e.target.value
                           )
+
                           setLoginError('')
                         }}
                       />
@@ -1852,6 +2032,7 @@ function App() {
                       ) : (
                         <span></span>
                       )}
+
 
                       <button
                         type="button"
@@ -1942,6 +2123,7 @@ function App() {
 
                     </div>
 
+
                     <div className="code-content">
 
                       <p>
@@ -2004,7 +2186,9 @@ function App() {
             )}
 
 
-            {/* SIGN UP */}
+            {/* ==================================================
+                SIGN UP
+                ================================================== */}
 
             {authMode === 'signup' && (
               <div className="auth-layout">
@@ -2032,6 +2216,8 @@ function App() {
 
                   </div>
 
+
+                  {/* FULL NAME */}
 
                   <div className="auth-field">
 
@@ -2061,33 +2247,9 @@ function App() {
                   </div>
 
 
-                  <div className="auth-field">
+                  {/* USERNAME REMOVED */}
 
-                    <label>
-                      Username
-                    </label>
-
-                    <div className="auth-input">
-
-                      <span>
-                        @
-                      </span>
-
-                      <input
-                        type="text"
-                        placeholder="Choose a username"
-                        value={username}
-                        onChange={(e) =>
-                          setUsername(
-                            e.target.value
-                          )
-                        }
-                      />
-
-                    </div>
-
-                  </div>
-
+                  {/* EMAIL */}
 
                   <div className="auth-field">
 
@@ -2117,6 +2279,8 @@ function App() {
                   </div>
 
 
+                  {/* PASSWORD */}
+
                   <div className="auth-field">
 
                     <label>
@@ -2144,6 +2308,8 @@ function App() {
 
                   </div>
 
+
+                  {/* CONFIRM PASSWORD */}
 
                   <div className="auth-field">
 
@@ -2229,6 +2395,8 @@ function App() {
                 </form>
 
 
+                {/* SIGN UP VISUAL */}
+
                 <div className="auth-visual">
 
                   <div className="circle circle-one"></div>
@@ -2244,6 +2412,7 @@ function App() {
                       <span></span>
 
                     </div>
+
 
                     <div className="code-content">
 
@@ -2310,6 +2479,7 @@ function App() {
         )}
 
       </section>
+
     </main>
   )
 }

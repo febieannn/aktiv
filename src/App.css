@@ -39,8 +39,6 @@ button {
 
 /* =========================================================
    NAVBAR
-   NORMAL SIZE
-   CENTERED NAVIGATION
    ========================================================= */
 
 .navbar {
@@ -70,13 +68,18 @@ button {
 .logo-button {
   width: 100px;
   height: 100%;
+
   border: none;
   outline: none;
+
   background: transparent;
+
   padding: 0;
+
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
   box-shadow: none;
 }
 
@@ -150,11 +153,6 @@ button {
     font-weight 0.2s ease;
 }
 
-
-/* =========================================================
-   UNDERLINE
-   ========================================================= */
-
 .nav-item::after {
   content: "";
 
@@ -173,12 +171,8 @@ button {
   transition: width 0.2s ease;
 }
 
-
-/* ACTIVE */
-
 .nav-item.active {
   color: #19b7c5 !important;
-
   font-weight: 700;
 }
 
@@ -186,12 +180,8 @@ button {
   width: 100%;
 }
 
-
-/* HOVER */
-
 .nav-item:hover {
   color: #19b7c5 !important;
-
   font-weight: 700;
 }
 
@@ -201,7 +191,7 @@ button {
 
 
 /* =========================================================
-   RIGHT USER AREA
+   RIGHT NAVIGATION
    ========================================================= */
 
 .nav-user {
@@ -213,13 +203,79 @@ button {
   align-items: center;
   justify-content: flex-end;
 
-  gap: 9px;
+  gap: 8px;
 
   position: relative;
 }
 
 
-/* BELL */
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.nav-login-button {
+  height: 28px;
+
+  padding: 0 12px;
+
+  border: 1px solid #999999;
+
+  border-radius: 5px;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.nav-login-button:hover {
+  border-color: #18356d;
+
+  color: #18356d;
+
+  background: #f5f8fa;
+}
+
+
+/* =========================================================
+   SIGN UP BUTTON
+   ========================================================= */
+
+.nav-signup-button {
+  height: 28px;
+
+  padding: 0 12px;
+
+  border: 1px solid #1293ad;
+
+  border-radius: 5px;
+
+  background: #1293ad;
+
+  color: #ffffff;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.nav-signup-button:hover {
+  background: #0d7f96;
+
+  border-color: #0d7f96;
+}
+
+
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
 
 .nav-icon-button {
   width: 22px;
@@ -247,7 +303,9 @@ button {
 }
 
 
-/* USER ICON */
+/* =========================================================
+   USER ICON
+   ========================================================= */
 
 .nav-user-profile {
   width: 22px;
@@ -265,7 +323,6 @@ button {
   color: #142d61;
 
   padding: 0;
-  margin: 0;
 
   box-shadow: none;
 }
@@ -275,7 +332,9 @@ button {
 }
 
 
-/* USERNAME */
+/* =========================================================
+   USERNAME
+   ========================================================= */
 
 .nav-username-button {
   border: none;
@@ -286,6 +345,7 @@ button {
   color: #111111;
 
   padding: 0;
+
   margin: 0;
 
   font-size: 10px;
@@ -294,8 +354,14 @@ button {
   box-shadow: none;
 }
 
+.nav-username-button:hover {
+  color: #19b7c5;
+}
 
-/* CHEVRON */
+
+/* =========================================================
+   CHEVRON
+   ========================================================= */
 
 .nav-chevron {
   width: 24px;
@@ -313,6 +379,7 @@ button {
   color: #142d61;
 
   padding: 0;
+
   margin-left: 5px;
 
   box-shadow: none;
@@ -757,24 +824,14 @@ button {
   padding: 0 7%;
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   background: white;
 
   border-top: 1px solid #dddddd;
-}
-
-.footer-logo {
-  font-size: 19px;
-
-  font-weight: 900;
-
-  font-style: italic;
-
-  color: #161616;
-
-  letter-spacing: -1.5px;
 }
 
 .footer-links {
@@ -804,7 +861,6 @@ button {
 
 /* =========================================================
    ACTIVITIES PAGE
-   MATCHES FOURTH PHOTO
    ========================================================= */
 
 .activities-page {
@@ -822,9 +878,6 @@ button {
 
   margin: auto;
 }
-
-
-/* BANNER */
 
 .activities-banner {
   width: 100%;
@@ -846,9 +899,6 @@ button {
 
   object-fit: cover;
 }
-
-
-/* ACTIVITIES HEADER */
 
 .activities-title {
   margin-left: 25px;
@@ -876,9 +926,6 @@ button {
   line-height: 1.4;
 }
 
-
-/* GRID */
-
 .activities-grid {
   display: grid;
 
@@ -887,9 +934,6 @@ button {
 
   gap: 22px 40px;
 }
-
-
-/* CARD */
 
 .activity-card {
   min-height: 101px;
@@ -917,9 +961,6 @@ button {
   gap: 20px;
 }
 
-
-/* ICON */
-
 .activity-icon {
   width: 43px;
   height: 43px;
@@ -936,9 +977,6 @@ button {
 
   color: #173875;
 }
-
-
-/* CARD HEADING */
 
 .activity-card-heading {
   min-width: 0;
@@ -982,9 +1020,6 @@ button {
   max-width: 260px;
 }
 
-
-/* STATUS */
-
 .activity-status {
   flex-shrink: 0;
 
@@ -1027,9 +1062,6 @@ button {
   font-size: 6px;
 }
 
-
-/* BUTTON */
-
 .activity-card-bottom {
   margin-top: 7px;
 
@@ -1065,9 +1097,6 @@ button {
   border-color: #18356d;
 }
 
-
-/* ACTIVITIES FOOTER */
-
 .activities-footer {
   width: 100%;
 
@@ -1094,7 +1123,9 @@ button {
 
 .activities-footer > div:first-child {
   display: flex;
+
   align-items: center;
+
   gap: 3px;
 }
 
@@ -1130,7 +1161,7 @@ button {
 
 
 /* =========================================================
-   SETTINGS PAGE
+   SETTINGS
    ========================================================= */
 
 .settings-page {
@@ -1148,9 +1179,6 @@ button {
 
   margin: auto;
 }
-
-
-/* HEADER */
 
 .settings-header {
   margin-bottom: 19px;
@@ -1184,9 +1212,6 @@ button {
   font-size: 9px;
 }
 
-
-/* LAYOUT */
-
 .settings-layout {
   display: grid;
 
@@ -1196,9 +1221,6 @@ button {
 
   align-items: start;
 }
-
-
-/* SIDEBAR */
 
 .settings-sidebar {
   display: flex;
@@ -1264,23 +1286,13 @@ button {
   color: #18356d;
 
   flex-shrink: 0;
+
+  font-size: 10px;
 }
-
-.settings-tab.active .settings-tab-icon {
-  background: #3f5b87;
-
-  color: #ffffff;
-}
-
-
-/* CONTENT */
 
 .settings-content {
   min-width: 0;
 }
-
-
-/* PANEL */
 
 .settings-panel {
   background: #ffffff;
@@ -1320,9 +1332,6 @@ button {
   margin: 10px 0;
 }
 
-
-/* ACCOUNT */
-
 .profile-row {
   display: flex;
 
@@ -1350,7 +1359,7 @@ button {
 
   color: #ffffff;
 
-  font-size: 17px;
+  font-size: 12px;
 }
 
 .edit-profile-btn {
@@ -1418,9 +1427,6 @@ button {
 .account-field input:focus {
   border-color: #19b7c5;
 }
-
-
-/* SETTINGS BUTTONS */
 
 .settings-actions {
   margin-top: 11px;
@@ -1512,9 +1518,6 @@ button {
 
   font-size: 7px;
 }
-
-
-/* TOGGLE */
 
 .toggle {
   width: 26px;
@@ -1613,9 +1616,6 @@ button {
 .logout-btn:hover {
   background: #122952;
 }
-
-
-/* DELETE */
 
 .delete-panel {
   min-height: 59px;
@@ -2277,7 +2277,7 @@ button {
 
     margin-left: auto;
 
-    margin-right: 10px;
+    margin-right: 8px;
 
     gap: 11px;
 
@@ -2303,7 +2303,16 @@ button {
   }
 
   .nav-user {
-    gap: 4px;
+    gap: 5px;
+  }
+
+  .nav-login-button,
+  .nav-signup-button {
+    height: 27px;
+
+    padding: 0 8px;
+
+    font-size: 8px;
   }
 
   .nav-icon-button {
@@ -2389,7 +2398,9 @@ button {
 
   .activities-banner img {
     height: auto;
+
     min-height: 100px;
+
     object-fit: cover;
   }
 
@@ -2469,23 +2480,36 @@ button {
 
 @media (max-width: 400px) {
 
+  .navbar {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .logo-button {
+    width: 48px;
+  }
+
+  .aktiv-logo {
+    width: 40px;
+  }
+
   .nav-center {
     gap: 7px;
+
+    margin-right: 5px;
   }
 
   .nav-item {
     font-size: 7px;
   }
 
-  .nav-user-profile,
-  .nav-icon-button {
-    width: 18px;
-    height: 18px;
-  }
+  .nav-login-button,
+  .nav-signup-button {
+    height: 25px;
 
-  .nav-chevron {
-    width: 19px;
-    height: 19px;
+    padding: 0 6px;
+
+    font-size: 7px;
   }
 
   .features-grid {
