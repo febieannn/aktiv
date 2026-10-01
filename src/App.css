@@ -229,17 +229,17 @@ button {
   align-items: center;
   justify-content: center;
 
-  border: none !important;
-  outline: none !important;
+  border: none;
+  outline: none;
 
-  background: transparent !important;
+  background: transparent;
 
   color: #142d61;
 
   padding: 0;
   margin: 0 8px 0 0;
 
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .nav-icon-button:hover {
@@ -257,17 +257,17 @@ button {
   align-items: center;
   justify-content: center;
 
-  border: none !important;
-  outline: none !important;
+  border: none;
+  outline: none;
 
-  background: transparent !important;
+  background: transparent;
 
   color: #142d61;
 
   padding: 0;
   margin: 0;
 
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .nav-user-profile:hover {
@@ -278,10 +278,10 @@ button {
 /* USERNAME */
 
 .nav-username-button {
-  border: none !important;
-  outline: none !important;
+  border: none;
+  outline: none;
 
-  background: transparent !important;
+  background: transparent;
 
   color: #111111;
 
@@ -291,7 +291,7 @@ button {
   font-size: 10px;
   font-weight: 500;
 
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 
@@ -305,17 +305,17 @@ button {
   align-items: center;
   justify-content: center;
 
-  border: none !important;
-  outline: none !important;
+  border: none;
+  outline: none;
 
-  background: transparent !important;
+  background: transparent;
 
   color: #142d61;
 
   padding: 0;
   margin-left: 5px;
 
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .nav-chevron:hover {
@@ -1387,6 +1387,8 @@ button {
   display: block;
 
   color: #18356d;
+
+  text-align: left;
 
   font-size: 7px;
 
