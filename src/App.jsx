@@ -584,20 +584,6 @@ function App() {
             </button>
 
 
-            {/* USERNAME */}
-            <button
-              type="button"
-              className="nav-username-button"
-              onClick={() =>
-                setShowUserMenu(
-                  (previous) => !previous
-                )
-              }
-            >
-              Username
-            </button>
-
-
             {/* CHEVRON */}
             <button
               type="button"
