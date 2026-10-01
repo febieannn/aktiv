@@ -1498,6 +1498,8 @@ button {
 .notification-row h3 {
   color: #18356d;
 
+  text-align: left;
+
   font-size: 8px;
 
   margin-bottom: 3px;
@@ -1505,6 +1507,8 @@ button {
 
 .notification-row p {
   color: #555555;
+
+  text-align: left;
 
   font-size: 7px;
 }
@@ -1625,6 +1629,8 @@ button {
 
 .delete-panel h3 {
   color: #18356d;
+
+  text-align: left;
 
   font-size: 8px;
 
